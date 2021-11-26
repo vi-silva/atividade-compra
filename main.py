@@ -9,6 +9,7 @@ class Utilidades:
                 return int(input(mensagem))
             except:
                 print('Informe um valor numérico')
+    
     @staticmethod
     def entrada_tratada_float(mensagem):
         while True:
@@ -17,8 +18,8 @@ class Utilidades:
             except:
                 print('Informe um valor numérico')
 
-class Aplicacao:
-    comandos = [
+class Menu:
+    _comandos = [
         (0, 'Informar cliente'),
         (1, 'Adicionar produto'),
         (2, 'Incrementar item'),
@@ -27,33 +28,40 @@ class Aplicacao:
         (5, 'Exibir resumo')
     ]
 
+    def menu(self) -> int:
+        for op in self._comandos:
+            opcao, descricao = op
+            print(f'[{opcao}] - {descricao}')
+        return Utilidades.entrada_tratada_int('Selecione uma opcao acima: ')
+
+
+class Aplicacao:
     def __init__(self):
         self._carrinho = Carrinho()
+        self._menu = Menu()
 
     def executar(self):
         while True:
-            self._exibir_menu()
-            comando = input('> Selecione uma opcao acima: ')
-            deve_sair = self.executar_comando(comando)
+            deve_sair = self.executar_comando(self._menu.menu())
             if deve_sair:
                 break
 
     def executar_comando(self, comando):
-        if comando == '0':
+        if comando == 0:
             self._inserir_cliente()
-        elif comando == '1':
+        elif comando == 1:
             self._adicionar_produto()
             self._exibir_itens()
-        elif comando == '2':
+        elif comando == 2:
             self._incrementar_item()
             self._exibir_itens()
-        elif comando == '3':
+        elif comando == 3:
             self._decrementar_item()
             self._exibir_itens()
-        elif comando == '4':
+        elif comando == 4:
             self._remover_items()
             self._exibir_itens()
-        elif comando == '5':
+        elif comando == 5:
             self._exibir_resumo()
         else:
             return True
